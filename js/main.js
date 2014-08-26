@@ -1,9 +1,7 @@
 $(function() {
 
-	/* Create a cache object */
 	var cache = new LastFMCache();
 
-	/* Create a LastFM object */
 	var lastfm = new LastFM({
 		apiKey: '98a63757c7bd350beb8ff827d9274442',
 		apiSecret: 'b0a36db98a0f4ecdf6914bcfd6cd5660',
@@ -32,12 +30,6 @@ $(function() {
 
 	});
 
-	$("body").on("click", ".node", function() {
-		var artistName = $(this).find("text").text();
-		console.log(artistName);
-		loadSimilarArtist(artistName);
-	});
-
 	function loadSimilarArtist(artistName) {
 
 
@@ -64,6 +56,11 @@ $(function() {
 			}
 		});
 	}
+
+
+	var dragNode = d3.behavior.drag().on('dragstart', function(e) {
+		console.log('started dragging node');
+	})
 
 	function renderGraph(artistInfo, data) {
 
@@ -120,7 +117,11 @@ $(function() {
 			.data(graph.nodes)
 			.enter().append("g")
 			.attr("class", "node")
-			.call(force.drag);
+			.call(force.drag)
+			.on("click", function(d) {
+				if (d3.event.defaultPrevented) return;
+				loadSimilarArtist(d.name);
+			});
 
 		node.append("image")
 			.attr("xlink:href", function(d) {
