@@ -72,7 +72,7 @@ $(function() {
 			nodes: [{
 				name: artistInfo.artist.name,
 				image: artistInfo.artist.image[2]["#text"],
-				group: -1
+				group: 0
 			}],
 			links: []
 		};
@@ -81,12 +81,12 @@ $(function() {
 			graph.nodes.push({
 				name: artist.name,
 				image: artist.image[2]["#text"],
-				group: index
+				group: index + 1
 			});
 
 			graph.links.push({
 				source: 0,
-				target: index,
+				target: index + 1,
 				value: artist.match
 			});
 		});
@@ -129,14 +129,14 @@ $(function() {
 			})
 			.attr("x", -8)
 			.attr("y", -8)
-			.attr("width", 64)
-			.attr("height", 64);
+			.attr("width", 72)
+			.attr("height", 72);
 
 		node.append("text")
 			.attr("dx", 64)
 			.attr("dy", 32)
 			.text(function(d) {
-				return d.name
+				return d.name;
 			});
 
 		force.on("tick", function() {
@@ -159,7 +159,6 @@ $(function() {
 		});
 
 		$("#input-control").fadeOut();
-
 	}
 
 });
